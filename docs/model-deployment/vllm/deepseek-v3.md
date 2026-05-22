@@ -8,11 +8,11 @@ DeepSeek-V3 是由深度求索推出的基于MoE架构的高性能开源大语�
 
 | 模型权重 | 量化方式 | vLLM 版本 | 推荐硬件 | 卡数 | 部署方式 | 启动命令 |
 | -------- | -------- | --------- | -------- | ---- | -------- | -------- |
-| [hygon/DeepSeek-V3-0324-Channel-INT8-w8a8](https://www.modelscope.cn/models/hygon/DeepSeek-V3-0324-Channel-INT8-w8a8) | INT8 W8A8 | 0.15 | BW1100 | 8 | IFB | [**`>_`**](#deepseek-v3-0324-channel-int8-w8a8-ifb-bw1100-8x-vllm-015) |
+| [hygon/DeepSeek-V3-Channel-FP8-w8a8](https://www.modelscope.cn/models/hygon/DeepSeek-V3-Channel-FP8-w8a8) | FP8 W8A8 | 0.18 | BW1100 | 8 | IFB | [**`>_`**](#deepseek-v3-channel-fp8-w8a8-ifb-bw1100-8x-vllm-018) |
 
 ## 启动命令
 
-### DeepSeek-V3-0324-Channel-INT8-w8a8 IFB BW1100 8x vLLM 0.15
+### DeepSeek-V3-Channel-FP8-w8a8 IFB BW1100 8x vLLM 0.18
 
 ```bash
 rm -rf ~/.cache
@@ -30,7 +30,7 @@ export VLLM_USE_GLOBAL_CACHE13=1
 export VLLM_FUSED_MOE_CHUNK_SIZE=16384  
 export VLLM_USE_LIGHTOP=1
 export VLLM_USE_FLASH_ATTN_FP8=1
-vllm serve hygon/DeepSeek-V3-0324-Channel-INT8-w8a8  \
+vllm serve hygon/DeepSeek-V3-Channel-FP8-w8a8  \
         --trust-remote-code   \
         -q slimquant_marlin \
         --dtype bfloat16  \
@@ -54,7 +54,7 @@ from openai import OpenAI
 client = OpenAI(base_url="http://localhost:8000/v1", api_key="not-needed")
 
 response = client.chat.completions.create(
-    model="hygon/DeepSeek-V3-0324-Channel-INT8-w8a8",
+    model="hygon/DeepSeek-V3-Channel-FP8-w8a8",
     messages=[
         {"role": "system", "content": "你是一个专业的编程助手。"},
         {"role": "user", "content": "用 Python 实现一个高效的 LRU Cache"},
@@ -67,7 +67,7 @@ print(response.choices[0].message.content)
 
 ```bash
 curl http://0.0.0.0:8000/v1/completions -H "Content-Type: application/json" -d '{
-"model": "hygon/DeepSeek-V3-0324-Channel-INT8-w8a8",
+"model": "hygon/DeepSeek-V3-Channel-FP8-w8a8",
 "prompt":"你好，请用Python写一个贪吃蛇的游戏脚本",
 "temperature":0.0,
 "max_tokens": 1500
